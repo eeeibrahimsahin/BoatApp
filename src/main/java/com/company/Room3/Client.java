@@ -12,7 +12,10 @@ public class Client {
     private String emailAddress;
     private String creditCard; // we can use object here instead of String type.
 
-    public Client(int clientId, String firstName, String lastName, int telephoneNumber, String address, String emailAddress ,String creditCard) {
+    public Client() {
+    }
+
+    public Client(int clientId, String firstName, String lastName, int telephoneNumber, String address, String emailAddress , String creditCard) {
         this.clientId = clientId;
         this.firstName = firstName;
         this.lastName = lastName;

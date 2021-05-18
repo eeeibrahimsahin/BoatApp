@@ -6,11 +6,14 @@ public class Boat {
      * hourlyPrice: Hourly price's currency is euro.
      */
     private int boatId; //We can generate automatically
-    private String type;
+    private BoatType type;
     private double hourlyPrice;
     private int passengerCapacity;
 
-    public Boat(int boatId, String type, double hourlyPrice, int passengerCapacity) {
+    public Boat() {
+    }
+
+    public Boat(int boatId, BoatType type, double hourlyPrice, int passengerCapacity) {
         this.boatId = boatId;
         this.type = type;
         this.hourlyPrice = hourlyPrice;
@@ -22,11 +25,11 @@ public class Boat {
         return boatId;
     }
 
-    public String getType() {
+    public BoatType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(BoatType type) {
         this.type = type;
     }
 

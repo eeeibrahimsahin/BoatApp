@@ -18,6 +18,9 @@ public class Order {
     private LocalDateTime bookingDate;
     private double totalPrice;
 
+    public Order() {
+    }
+
     public Order(int orderId, Boat boat, Client client, Employee employee, LocalDateTime rentingDate,
                  int rentingDuration) {
         this.orderId = orderId;

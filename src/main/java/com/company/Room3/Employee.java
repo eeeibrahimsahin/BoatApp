@@ -7,6 +7,9 @@ public class Employee {
     private String telephoneNumber;
     private String emailAddress;
 
+    public Employee() {
+    }
+
     public Employee(int employeeId, String firstName, String lastName, String telephoneNumber, String emailAddress) {
         this.employeeId = employeeId;
         this.firstName = firstName;

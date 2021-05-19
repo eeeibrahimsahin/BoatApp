@@ -4,7 +4,8 @@ public class Client {
     /**
      * CreditCard: using account number.
      */
-    private int clientId; //We can generate automatically
+    private static int count = 1;
+    private int clientId;
     private String firstName;
     private String lastName;
     private int telephoneNumber;
@@ -15,14 +16,15 @@ public class Client {
     public Client() {
     }
 
-    public Client(int clientId, String firstName, String lastName, int telephoneNumber, String address, String emailAddress , String creditCard) {
-        this.clientId = clientId;
+    public Client( String firstName, String lastName, int telephoneNumber, String address, String emailAddress , String creditCard) {
+        this.clientId = count;
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
         this.address = address;
         this.emailAddress = emailAddress;
         this.creditCard = creditCard;
+        count++;
     }
 
 

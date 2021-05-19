@@ -1,7 +1,6 @@
 package com.company.Room3;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Model {
@@ -9,7 +8,14 @@ public class Model {
     public List<Employee> employeeList = new ArrayList<>();
     public List<Client> clientList = new ArrayList<>();
     public List<Order> orderList = new ArrayList<>();
-    public List<BoatType> boatTypeList = new ArrayList<>();
 
-
+    @Override
+    public String toString() {
+        return "Model{" +
+                "boatList=" + boatList +
+                ", employeeList=" + employeeList +
+                ", clientList=" + clientList +
+                ", orderList=" + orderList +
+                '}';
+    }
 }

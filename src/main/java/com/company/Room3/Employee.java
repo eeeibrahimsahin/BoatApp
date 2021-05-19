@@ -1,21 +1,38 @@
 package com.company.Room3;
 
+import sun.security.util.Password;
+
 public class Employee {
-    private int employeeId; //We can generate automatically
+    private static int count = 1;
+    private int employeeId;
     private String firstName;
     private String lastName;
     private String telephoneNumber;
     private String emailAddress;
+    private String userName;
+    private String password;
 
     public Employee() {
     }
 
-    public Employee(int employeeId, String firstName, String lastName, String telephoneNumber, String emailAddress) {
-        this.employeeId = employeeId;
+    public Employee(String firstName, String lastName, String telephoneNumber, String emailAddress) {
+        this.employeeId = count;
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
         this.emailAddress = emailAddress;
+        count++;
+    }
+
+    public Employee( String firstName, String lastName, String telephoneNumber, String emailAddress, String userName, String password) {
+        this.employeeId = count;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.telephoneNumber = telephoneNumber;
+        this.emailAddress = emailAddress;
+        this.userName = userName;
+        this.password = password;
+        count++;
     }
 
     public int getEmployeeId() {
@@ -52,5 +69,21 @@ public class Employee {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

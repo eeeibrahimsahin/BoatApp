@@ -1,6 +1,7 @@
 package com.company.Room3;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Order {
     /**
@@ -9,28 +10,30 @@ public class Order {
      * RentingDate is the date boat will be used.
      * Total price = duration * boat's hourly price.
      */
-    private int orderId; //We can generate automatically
+    private static int count = 1;
+    private int orderId;
     private Boat boat;
     private Client client;
     private Employee employee;
-    private LocalDateTime rentingDate;
+    private Date rentingDate;
     private int rentingDuration;
-    private LocalDateTime bookingDate;
+    private Date bookingDate;
     private double totalPrice;
 
     public Order() {
     }
 
-    public Order(int orderId, Boat boat, Client client, Employee employee, LocalDateTime rentingDate,
+    public Order(Boat boat, Client client, Employee employee, Date rentingDate,
                  int rentingDuration) {
-        this.orderId = orderId;
+        this.orderId = count;
         this.boat = boat;
         this.client = client;
         this.employee = employee;
         this.rentingDate = rentingDate;
         this.rentingDuration = rentingDuration;
-        this.bookingDate = LocalDateTime.now();
-        calculateTotalPrice(boat.getHourlyPrice());
+        this.bookingDate = new Date(System.currentTimeMillis());
+        calculateTotalPrice(boat.getMinimumPricePerHour());
+        count++;
     }
 
     public int getOrderId() {
@@ -62,11 +65,11 @@ public class Order {
     }
 
 
-    public LocalDateTime getRentingDate() {
+    public Date getRentingDate() {
         return rentingDate;
     }
 
-    public void setRentingDate(LocalDateTime rentingDate) {
+    public void setRentingDate(Date rentingDate) {
         this.rentingDate = rentingDate;
     }
 
@@ -78,7 +81,7 @@ public class Order {
         this.rentingDuration = rentingDuration;
     }
 
-    public LocalDateTime getBookingDate() {
+    public Date getBookingDate() {
         return bookingDate;
     }
 

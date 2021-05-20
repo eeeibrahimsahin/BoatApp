@@ -2,8 +2,10 @@ package com.company.Room3;
 
 import sun.security.util.Password;
 
+import java.util.Random;
+
 public class Employee {
-    private static int count = 1;
+    private Random random = new Random();
     private int employeeId;
     private String firstName;
     private String lastName;
@@ -16,23 +18,21 @@ public class Employee {
     }
 
     public Employee(String firstName, String lastName, String telephoneNumber, String emailAddress) {
-        this.employeeId = count;
+        this.employeeId = random.nextInt(1000);
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
         this.emailAddress = emailAddress;
-        count++;
     }
 
     public Employee( String firstName, String lastName, String telephoneNumber, String emailAddress, String userName, String password) {
-        this.employeeId = count;
+        this.employeeId = random.nextInt(1000);
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
         this.emailAddress = emailAddress;
         this.userName = userName;
         this.password = password;
-        count++;
     }
 
     public int getEmployeeId() {

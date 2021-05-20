@@ -1,10 +1,12 @@
 package com.company.Room3;
 
+import java.util.Random;
+
 public class Client {
     /**
      * CreditCard: using account number.
      */
-    private static int count = 1;
+    private Random random = new Random();
     private int clientId;
     private String firstName;
     private String lastName;
@@ -17,14 +19,13 @@ public class Client {
     }
 
     public Client( String firstName, String lastName, int telephoneNumber, String address, String emailAddress , String creditCard) {
-        this.clientId = count;
+        this.clientId = random.nextInt(1000);
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
         this.address = address;
         this.emailAddress = emailAddress;
         this.creditCard = creditCard;
-        count++;
     }
 
 

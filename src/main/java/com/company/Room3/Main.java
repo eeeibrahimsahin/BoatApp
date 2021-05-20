@@ -12,12 +12,13 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws ParseException {
+        /*
         Model model = new Model();
+
         model.boatList.addAll(Catalogue.kajaksList);
         model.boatList.addAll(Catalogue.rowingBoatsList);
         model.boatList.addAll(Catalogue.supBoardsList);
         model.boatList.addAll(Catalogue.electricalBoatsList);
-
         Client client = new Client("Aysegul", "Aydar", 1223456789, "Amsterdam",
                 "aysegul@gmail.com", "INGB1987654321NL");
         Employee employee = new Employee("Ibrahim", "Sahin", "123456789",
@@ -25,11 +26,10 @@ public class Main {
 
         Order order = new Order(Catalogue.kajaksList.get(0), client, employee, setDate("2021-05-15 1:30:10"),
                 1);
-
         model.clientList.add(client);
         model.employeeList.add(employee);
         model.orderList.add(order);
-
+*/
         ObjectMapper mapper = new ObjectMapper();
 
 //        // Java object to JSON file
@@ -38,7 +38,6 @@ public class Main {
             //mapper.writeValue(new File("c:\\temp\\boatAppData.json"), model);
             Model model1 = mapper.readValue(new File("c:\\temp\\boatAppData.json"), Model.class);
             System.out.println(model1.orderList.get(0).getRentingDate());
-
             Scanner scanner = new Scanner(System.in);
             boolean isAuthenticated = false;
             System.out.println("Welcome to BoatApp");
@@ -53,14 +52,13 @@ public class Main {
                     isAuthenticated = true;
                 }
             }
-
             System.out.println("To see reservations press R \n To make a new reservation press any keys");
-            if(scanner.nextLine().equalsIgnoreCase("R")){
+            if (scanner.nextLine().equalsIgnoreCase("R")) {
                 System.out.println("BoatId\tBoatType\tTour Date\t\t\t\t\tClient Name");
                 model1.orderList.stream().forEach(order1 ->
-                        System.out.println(order1.getBoat().getBoatId()+"\t\t" +
-                                order1.getBoat().getType()+"\t" +
-                                order1.getRentingDate()+"\t" +
+                        System.out.println(order1.getBoat().getBoatId() + "\t\t" +
+                                order1.getBoat().getType() + "\t" +
+                                order1.getRentingDate() + "\t" +
                                 order1.getClient().getFirstName()));
                 scanner.nextLine();
             }
@@ -68,6 +66,8 @@ public class Main {
             System.out.print("Enter desired reservation date to see available boats: ");
 
             String resDate = scanner.nextLine();
+            System.out.print("Enter desired tour duration: ");
+            int rentingDuration = Integer.parseInt(scanner.nextLine());
             List<Boat> availableBoatList = availableBoats(resDate, model1);
             if (availableBoatList.size() == 0) {
                 System.out.println("At the moment there is no available boat.");
@@ -102,17 +102,18 @@ public class Main {
                 String confirmOrCancel = scanner.nextLine();
 
                 if (confirmOrCancel.equalsIgnoreCase("Y")) {
-                    System.out.println("Reservation is done!");
+
                     Boat resBoat = new Boat();
-                    for (Boat boat2 : model.boatList) {
+                    for (Boat boat2 : model1.boatList) {
                         if (boat2.getBoatId() == boatId)
                             resBoat = boat2;
                     }
-                    Order order1 = new Order(resBoat,
-                            client1, employee, setDate(resDate), 1);
-                    model.orderList.add(order1);
-                    mapper.writeValue(new File("c:\\temp\\boatAppData.json"), model);
+                    model1.orderList.add(
+                            new Order(resBoat, client1, model1.employeeList.get(0), setDate(resDate), rentingDuration)
+                    );
+                    mapper.writeValue(new File("c:\\temp\\boatAppData.json"), model1);
                     isConfirm = true;
+                    System.out.println("Reservation is done!");
                 } else if (confirmOrCancel.equalsIgnoreCase("C")) {
                     System.out.println("Reservation is canceled!");
                     isConfirm = true;

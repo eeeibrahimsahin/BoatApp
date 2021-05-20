@@ -2,6 +2,8 @@ package com.company.Room3;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
 
 public class Order {
     /**
@@ -10,7 +12,7 @@ public class Order {
      * RentingDate is the date boat will be used.
      * Total price = duration * boat's hourly price.
      */
-    private static int count = 1;
+    private Random count = new Random();
     private int orderId;
     private Boat boat;
     private Client client;
@@ -25,7 +27,7 @@ public class Order {
 
     public Order(Boat boat, Client client, Employee employee, Date rentingDate,
                  int rentingDuration) {
-        this.orderId = count;
+        this.orderId = count.nextInt(200);
         this.boat = boat;
         this.client = client;
         this.employee = employee;
@@ -33,7 +35,7 @@ public class Order {
         this.rentingDuration = rentingDuration;
         this.bookingDate = new Date(System.currentTimeMillis());
         calculateTotalPrice(boat.getMinimumPricePerHour());
-        count++;
+        //count++;
     }
 
     public int getOrderId() {

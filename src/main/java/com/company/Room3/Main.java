@@ -37,6 +37,19 @@ public class Main {
             //mapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
             //mapper.writeValue(new File("c:\\temp\\boatAppData.json"), model);
             Model model1 = mapper.readValue(new File("c:\\temp\\boatAppData.json"), Model.class);
+            System.out.println(model1.boatList.size());
+            System.out.println(Catalogue.boatList.size());
+            System.out.println(Catalogue.equals(model1.boatList));
+            if(!model1.boatList.equals(Catalogue.boatList)){
+                Catalogue.boatList
+                        .stream()
+                        .filter(boat -> !model1.boatList.contains(boat))
+                        .map(boat -> {
+                            System.out.println(boat.getBoatId());
+                           return model1.boatList.add(boat);
+                        })
+                        .forEach(b->System.out.println(b +" added the boat list!"));
+            }
             System.out.println(model1.orderList.get(0).getRentingDate());
             Scanner scanner = new Scanner(System.in);
             boolean isAuthenticated = false;

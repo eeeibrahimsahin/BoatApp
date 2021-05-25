@@ -64,4 +64,15 @@ public class Boat {
     public void setMinimumPricePerHour(double minimumPricePerHour) {
         this.minimumPricePerHour = minimumPricePerHour;
     }
+
+    @Override
+    public String toString() {
+        return "Boat{" +
+                "boatId=" + boatId +
+                ", type=" + type +
+                ", seats=" + seats +
+                ", chargingTime=" + chargingTime +
+                ", minimumPricePerHour=" + minimumPricePerHour +
+                '}';
+    }
 }

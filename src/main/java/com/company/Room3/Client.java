@@ -80,4 +80,17 @@ public class Client {
     public void setCreditCard(String creditCard) {
         this.creditCard = creditCard;
     }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "clientId=" + clientId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", telephoneNumber=" + telephoneNumber +
+                ", address='" + address + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", creditCard='" + creditCard + '\'' +
+                '}';
+    }
 }

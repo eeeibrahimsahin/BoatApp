@@ -1,7 +1,5 @@
 package com.company.Room3;
 
-import sun.security.util.Password;
-
 import java.util.Random;
 
 public class Employee {
@@ -85,5 +83,18 @@ public class Employee {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeId=" + employeeId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

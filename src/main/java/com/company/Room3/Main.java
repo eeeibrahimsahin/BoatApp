@@ -12,31 +12,32 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws ParseException {
-        /*
+
         Model model = new Model();
 
-        model.boatList.addAll(Catalogue.kajaksList);
-        model.boatList.addAll(Catalogue.rowingBoatsList);
-        model.boatList.addAll(Catalogue.supBoardsList);
-        model.boatList.addAll(Catalogue.electricalBoatsList);
+//        model.boatList.addAll(Catalogue.kajaksList);
+//        model.boatList.addAll(Catalogue.rowingBoatsList);
+//        model.boatList.addAll(Catalogue.supBoardsList);
+//        model.boatList.addAll(Catalogue.electricalBoatsList);
         Client client = new Client("Aysegul", "Aydar", 1223456789, "Amsterdam",
                 "aysegul@gmail.com", "INGB1987654321NL");
         Employee employee = new Employee("Ibrahim", "Sahin", "123456789",
                 "ibrahim@gmail.com", "ibrahim", "12345");
 
-        Order order = new Order(Catalogue.kajaksList.get(0), client, employee, setDate("2021-05-15 1:30:10"),
-                1);
+//        Order order = new Order(Catalogue.kajaksList.get(0), client, employee, setDate("2021-05-15 1:30:10"),
+//                1);
         model.clientList.add(client);
         model.employeeList.add(employee);
-        model.orderList.add(order);
-*/
+        model.boatList.addAll(Catalogue.boatList);
+        //model.orderList.add(order);
+
         ObjectMapper mapper = new ObjectMapper();
 
 //        // Java object to JSON file
         try {
             //mapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
-            //mapper.writeValue(new File("c:\\temp\\boatAppData.json"), model);
-            Model model1 = mapper.readValue(new File("c:\\temp\\boatAppData.json"), Model.class);
+            mapper.writeValue(new File("boatAppData.json"), model);
+            Model model1 = mapper.readValue(new File("boatAppData.json"), Model.class);
             System.out.println(model1.boatList.size());
             System.out.println(Catalogue.boatList.size());
             System.out.println(Catalogue.equals(model1.boatList));
@@ -50,7 +51,7 @@ public class Main {
                         })
                         .forEach(b->System.out.println(b +" added the boat list!"));
             }
-            System.out.println(model1.orderList.get(0).getRentingDate());
+            //System.out.println(model1.orderList.get(0).getRentingDate());
             Scanner scanner = new Scanner(System.in);
             boolean isAuthenticated = false;
             System.out.println("Welcome to BoatApp");
@@ -124,7 +125,7 @@ public class Main {
                     model1.orderList.add(
                             new Order(resBoat, client1, model1.employeeList.get(0), setDate(resDate), rentingDuration)
                     );
-                    mapper.writeValue(new File("c:\\temp\\boatAppData.json"), model1);
+                    mapper.writeValue(new File("boatAppData.json"), model1);
                     isConfirm = true;
                     System.out.println("Reservation is done!");
                 } else if (confirmOrCancel.equalsIgnoreCase("C")) {

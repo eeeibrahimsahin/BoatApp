@@ -94,4 +94,18 @@ public class Order {
     private void calculateTotalPrice(double hourlyBoatPrice) {
         this.totalPrice = hourlyBoatPrice * rentingDuration;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", boat=" + boat +
+                ", client=" + client +
+                ", employee=" + employee +
+                ", rentingDate=" + rentingDate +
+                ", rentingDuration=" + rentingDuration +
+                ", bookingDate=" + bookingDate +
+                ", totalPrice=" + totalPrice +
+                '}';
+    }
 }

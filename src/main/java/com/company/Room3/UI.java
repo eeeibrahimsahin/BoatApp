@@ -1,7 +1,6 @@
 package com.company.Room3;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,13 +17,14 @@ public class UI {
 
     public int mainMenu() {
         System.out.println("-----------Main Menu-----------\n" +
-                "Choose the selection\n" +
+                "Choose an option from the following list\n" +
                 "1- See reservations\n" +
                 "2- Add a reservation\n" +
                 "3- Update a reservation\n" +
                 "4- Add a new boat to system\n" +
                 "5- Update a boat\n" +
-                "6- Exit");
+                "6- Add Employee\n" +
+                "7- Return Login Screen");
         return Integer.parseInt(scanner.nextLine());
     }
 
@@ -95,12 +95,76 @@ public class UI {
                 System.out.println("Reservation is canceled!");
                 isConfirm = true;
             } else {
-                System.out.println("Invalid selection please make valid selection");
+                System.out.println("Invalid selection please choose an option that just in the list");
             }
         }
     }
 
-    public void addBoat(Model model){
+    public void updateReservation(Model model) throws ParseException {
+        model.orderList.stream().forEach(System.out::println);
+        System.out.print("Choose an order by using orderID: ");
+        int orderId = Integer.parseInt(scanner.nextLine());
+        Optional<Order> order = model.orderList.stream().filter(o -> o.getOrderId() == orderId).findFirst();
+        System.out.println(order.get());
+        while (true){
+            System.out.format("Choose an option from following list for number of %s:\n" +
+                    "1- Change date of the reservation\n" +
+                    "2- Change client information of the customer\n" +
+                    "3- Change the boat\n"+
+                    "4- Delete the reservation\n" +
+                    "5- Exit\n", orderId);
+            String userSelection = scanner.nextLine();
+            if(userSelection.equalsIgnoreCase("1")){
+                System.out.println("Date format should be that yyyy-MM-dd HH:mm:ss");
+                System.out.print("Enter the new date: ");
+                String resDate = scanner.nextLine();
+                order.get().setRentingDate(setDate(resDate));
+                System.out.println(order.get());
+            }else if(userSelection.equalsIgnoreCase("2")){
+                System.out.print("Enter Client Firstname: ");
+                String clientFirstname = scanner.nextLine();
+                System.out.print("Enter Client Lastname: ");
+                String clientLastname = scanner.nextLine();
+                System.out.print("Enter Client telephone number: ");
+                int clientTelephoneNumber = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Client address: ");
+                String clientAddress = scanner.nextLine();
+                System.out.print("Enter Client email address: ");
+                String clientEmailAddress = scanner.nextLine();
+                order.get().getClient().setFirstName(clientFirstname);
+                order.get().getClient().setLastName(clientLastname);
+                order.get().getClient().setTelephoneNumber(clientTelephoneNumber);
+                order.get().getClient().setAddress(clientAddress);
+                order.get().getClient().setEmailAddress(clientEmailAddress);
+                System.out.println(order.get().getClient());
+            }else if(userSelection.equalsIgnoreCase("3")){
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String resDate = df.format(order.get().getRentingDate());
+                List<Boat> availableBoatList = availableBoats(resDate, model);
+                if (availableBoatList.size() == 0) {
+                    System.out.println("At the moment there is no available boat.");
+                    scanner.next();
+                }
+                System.out.println("Available boat info:\n id - Type - Capacity");
+                availableBoatList.stream().forEach(boat2 -> System.out.println(boat2.getBoatId() + " " +
+                        boat2.getType() + " " + boat2.getSeats()));
+
+                System.out.print("Select the new boat by using boatID: ");
+                int boatId = Integer.parseInt(scanner.nextLine());
+                Optional<Boat> newBoat = availableBoatList.stream().filter(boat -> boat.getBoatId() == boatId).findFirst();
+                order.get().setBoat(newBoat.get());
+                System.out.println(order.get().getBoat());
+            }else if(userSelection.equalsIgnoreCase("4")){
+                model.orderList.removeIf(order1 -> order1.getOrderId()==orderId);
+                model.orderList.stream().forEach(System.out::println);
+            }else if (userSelection.equalsIgnoreCase("5")){
+                break;
+            }else {
+                System.out.println("Invalid selection please choose an option that just in the list");
+            }
+        }
+    }
+    public void addBoat(Model model) {
         System.out.println("Choose the boat type:\n" +
                 "1- KAJAK\n" +
                 "2- SUPBOARD\n" +
@@ -110,93 +174,139 @@ public class UI {
         int chargingTime = 0;
         int boatListLength = model.boatList.size();
         int boatId = 0;
-        while (true){
+        while (true) {
             String userBoatTypeSelection = scanner.nextLine();
-            if(userBoatTypeSelection.equals("1")){
+            if (userBoatTypeSelection.equals("1")) {
                 boatType = BoatType.KAJAK;
                 long count = model.boatList.stream().filter(boat -> boat.getType().equals(BoatType.KAJAK)).count();
-                boatId = 100 + (int)++count;
+                boatId = 100 + (int) ++count;
                 break;
-            }
-            else if (userBoatTypeSelection.equals("2")){
-                boatType=BoatType.SUPBOARD;
+            } else if (userBoatTypeSelection.equals("2")) {
+                boatType = BoatType.SUPBOARD;
                 long count = model.boatList.stream().filter(boat -> boat.getType().equals(BoatType.SUPBOARD)).count();
-                boatId = 300 + (int)++count;
+                boatId = 300 + (int) ++count;
                 break;
-            }
-            else if(userBoatTypeSelection.equals("3")){
-                boatType=BoatType.ROWINGBOAT;
+            } else if (userBoatTypeSelection.equals("3")) {
+                boatType = BoatType.ROWINGBOAT;
                 long count = model.boatList.stream().filter(boat -> boat.getType().equals(BoatType.ROWINGBOAT)).count();
-                boatId = 200 + (int)++count;
+                boatId = 200 + (int) ++count;
                 break;
-            }
-            else if (userBoatTypeSelection.equals("4")){
-                boatType=BoatType.ELECTRICALBOAT;
+            } else if (userBoatTypeSelection.equals("4")) {
+                boatType = BoatType.ELECTRICALBOAT;
                 long count = model.boatList.stream().filter(boat -> boat.getType().equals(BoatType.ELECTRICALBOAT)).count();
-                boatId = 400 + (int)++count;
+                boatId = 400 + (int) ++count;
                 System.out.print("Enter the charging time: ");
-                chargingTime =Integer.parseInt(scanner.nextLine());
+                chargingTime = Integer.parseInt(scanner.nextLine());
                 break;
-            }
-            else
-                System.out.println("Invalid selection please select a number that just in the list");
+            } else
+                System.out.println("Invalid selection please choose an option that just in the list");
         }
         System.out.print("Enter the seat number of the boat: ");
 
         int boatSeats = Integer.parseInt(scanner.nextLine());
-        if(boatType.equals(BoatType.ELECTRICALBOAT)){
+        if (boatType.equals(BoatType.ELECTRICALBOAT)) {
 
         }
         System.out.print("Enter the boat's minimum price per hour: ");
         int minimumPricePerHour = Integer.parseInt(scanner.nextLine());
         System.out.format("Boat Information:\n Boat Type: %s\nBoat Seats: %s\nMinimum Price: %s\n" +
-                        "to confirm pres Y, to cancel press C: ", boatType, boatSeats, minimumPricePerHour);
+                "to confirm pres Y, to cancel press C: ", boatType, boatSeats, minimumPricePerHour);
 
-        while (true){
+        while (true) {
             String isConfirm = scanner.nextLine();
-            if(isConfirm.equalsIgnoreCase("Y")){
-                if(boatType.equals(BoatType.ELECTRICALBOAT)){
-                    model.boatList.add(new Boat(boatId,boatType,boatSeats,chargingTime,minimumPricePerHour));
-                }else {
-                    model.boatList.add(new Boat(boatId,boatType,boatSeats,minimumPricePerHour));
+            if (isConfirm.equalsIgnoreCase("Y")) {
+                if (boatType.equals(BoatType.ELECTRICALBOAT)) {
+                    model.boatList.add(new Boat(boatId, boatType, boatSeats, chargingTime, minimumPricePerHour));
+                } else {
+                    model.boatList.add(new Boat(boatId, boatType, boatSeats, minimumPricePerHour));
                 }
-                System.out.println(model.boatList.get(model.boatList.size()-1).getBoatId()+
-                        "\n"+model.boatList.get(model.boatList.size()-1).getMinimumPricePerHour() );
+                System.out.println(model.boatList.get(model.boatList.size() - 1).getBoatId() +
+                        "\n" + model.boatList.get(model.boatList.size() - 1).getMinimumPricePerHour());
                 break;
-            }else if(isConfirm.equalsIgnoreCase("C")){
+            } else if (isConfirm.equalsIgnoreCase("C")) {
                 break;
-            }else {
-                System.out.println("Invalid selection please select a number that just in the list");
+            } else {
+                System.out.println("Invalid selection please choose an option that just in the list");
             }
         }
-
-
-
     }
 
-    public void updateBoat(Model model){
+    public void updateBoat(Model model) {
         model.boatList.stream().forEach(System.out::println);
         System.out.print("Select a boat by using boatId");
-        int boatId =Integer.parseInt(scanner.nextLine());
+        int boatId = Integer.parseInt(scanner.nextLine());
         Optional<Boat> boat = model.boatList.stream().filter(boat1 -> boat1.getBoatId() == boatId).findFirst();
         System.out.println(boat.toString());
-        while (true){
+        while (true) {
 
-            System.out.format("Choose an stuff for number of %s:\n" +
-                    "1- Change number of seats" +
-                    "2- Change minimum price per hour" +
-                    "3- Change charging time" +
-                    "4- Delete" +
-                    "5- Exit",boatId);
+            System.out.format("Choose an option from following list for number of %s:\n" +
+                    "1- Change number of seats\n" +
+                    "2- Change minimum price per hour\n" +
+                    "3- Change charging time\n" +
+                    "4- Delete\n" +
+                    "5- Exit\n", boatId);
             String userSelection = scanner.nextLine();
-            if(userSelection.equalsIgnoreCase("1")){
+            if (userSelection.equalsIgnoreCase("1")) {
                 System.out.print("Enter the new seats number: ");
                 int seatNumber = Integer.parseInt(scanner.nextLine());
-
-            }else {
-
+                boat.get().setSeats(seatNumber);
+                System.out.println(boat.get().toString());
+            } else if (userSelection.equalsIgnoreCase("2")) {
+                System.out.print("Enter the new minimum price per hour: ");
+                double minPrice = Double.parseDouble(scanner.nextLine());
+                boat.get().setMinimumPricePerHour(minPrice);
+                System.out.println(boat.get().toString());
+            } else if (userSelection.equalsIgnoreCase("3")) {
+                System.out.print("Enter the new charging time: ");
+                int chargingTime = Integer.parseInt(scanner.nextLine());
+                boat.get().setChargingTime(chargingTime);
+                System.out.println(boat.get().toString());
+            } else if (userSelection.equalsIgnoreCase("4")) {
+                model.boatList.removeIf(boat1 -> boat1.getBoatId() == boatId);
+                model.boatList.stream().forEach(System.out::println);
+            } else if (userSelection.equalsIgnoreCase("5")) {
+                break;
+            } else {
+                System.out.println("Invalid selection please choose an option that just in the list");
             }
 
+        }
+    }
+
+    public void addEmployee(Model model){
+        System.out.print("Enter firstname: ");
+        String firstName = scanner.nextLine();
+        System.out.print("Enter lastname: ");
+        String lastName = scanner.nextLine();
+        System.out.print("Enter telephone number: ");
+        String telephoneNumber = scanner.nextLine();
+        System.out.print("Enter email address: ");
+        String emailAddress = scanner.nextLine();
+        System.out.print("Enter username: ");
+        String userName = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+        model.employeeList.add(new Employee(firstName,lastName,telephoneNumber,emailAddress,userName,password));
+        model.employeeList.stream().forEach(System.out::println);
+    }
+
+    public void login(Model model) {
+/*
+        System.out.println("Enter username and password\n" +
+                "Press Q to quit from App");
+*/
+        boolean isAuthenticated = false;
+        System.out.println("Welcome to BoatApp");
+        while (!isAuthenticated) {
+            System.out.print("Enter username: ");
+            String userName = scanner.nextLine();
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+            if (!authentication(userName, password, model)) {
+                System.out.println("Incorrect username or password.\n Please try again.");
+            } else {
+                isAuthenticated = true;
+            }
         }
     }
 
@@ -219,22 +329,6 @@ public class UI {
             e.printStackTrace();
         }
         return tempBoatList;
-    }
-
-    public void login(Model model) {
-        boolean isAuthenticated = false;
-        System.out.println("Welcome to BoatApp");
-        while (!isAuthenticated) {
-            System.out.print("Enter username: ");
-            String userName = scanner.nextLine();
-            System.out.print("Enter password: ");
-            String password = scanner.nextLine();
-            if (!authentication(userName, password, model)) {
-                System.out.println("Incorrect username or password.\n Please try again.");
-            } else {
-                isAuthenticated = true;
-            }
-        }
     }
 
     private boolean authentication(String username, String password, Model model) {
